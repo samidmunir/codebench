@@ -65,7 +65,7 @@ const Navbar = () => {
                 <input
                     type='email'
                     placeholder='Your email'
-                    className='bg-zinc-800 opacity-75 text-indigo-500 px-2 placeholder:text-indigo-500 placeholder:text-xl hover:opacity-100 focus:outline-none transition-all cursor-default' 
+                    className='bg-zinc-800 opacity-75 text-indigo-500 border-2 border-zinc-900 px-2 placeholder:text-indigo-500 placeholder:text-xl hover:opacity-100 focus:outline-none focus:border-indigo-500 transition-all cursor-default' 
                 />
                 <button className='outline-none border-2 border-indigo-500 text-indigo-500 opacity-75 text-xl py-1 px-2 hover:bg-indigo-500 hover:text-zinc-300 hover:scale-110 hover:opacity-100 transition-all cursor-default'>Subscribe</button>
             </div>
