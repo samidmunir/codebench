@@ -5,4 +5,5 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ## Data Structures & Algorithms
 ## Leetcode Mastery
 ### Neetcode 150
-* 217. Contains Duplicate
+* 217. Contains Duplicat
+* 242. Valid Anagram
