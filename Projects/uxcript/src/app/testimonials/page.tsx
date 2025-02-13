@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import Loading from '@/app/loading'
 
-const Home = () => {
+const Testimonials = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -13,9 +13,9 @@ const Home = () => {
 
   return loading ? <Loading /> : (
     <main>
-      <h1>HOME</h1>
+      <h1>TESTIMONIALS</h1>
     </main>
   );
 }
 
-export default Home;
+export default Testimonials;
