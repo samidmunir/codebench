@@ -11,29 +11,34 @@ class Solution:
         post = []
         answer = []
 
-        lastProduct = 1
+        product = 0
         for i in range(len(nums)):
             if i == 0:
                 prefix = 1 * nums[i]
-                lastProduct = prefix * lastProduct
+                product = prefix
             else:
-                prefix = nums[i - 1] * lastProduct
-                lastProduct = prefix * lastProduct
+                prefix = product * nums[i - 1]
+                product = prefix
             pre.append(prefix)
-        
-        print(f'pre[]: {pre}')
 
-        lastProduct = 1
+        product = 0
         i = len(nums) - 1
         while i >= 0:
             if i == len(nums) - 1:
                 postfix = 1
-                lastProduct = postfix * lastProduct
+                product = postfix
             else:
-                postfix = nums[i - 1] * lastProduct
+                postfix = product * nums[i + 1]
+                product = postfix
+            i -= 1
             post.append(postfix)
-        
-        print(f'post[]: {post}')
+        post.reverse()
 
+        for i in range(len(nums)):
+            product = pre[i] * post[i]
+            answer.append(product)
+
+        print(f'pre[]: {pre}')
+        print(f'post[]: {post}')
 
         return answer
