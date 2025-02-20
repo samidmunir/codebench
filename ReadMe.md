@@ -6,6 +6,7 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ## Leetcode Mastery
 ### Arrays
 3423. Maximum Difference Between Adjacent Elements in a Circular Array
+3427. Sum of Varivable Length Subarrays
 ### Neetcode 150
 217. Contains Duplicate
 242. Valid Anagram
