@@ -4,6 +4,8 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 * Uxcript
 ## Data Structures & Algorithms
 ## Leetcode Mastery
+### Arrays
+3423. Maximum Difference Between Adjacent Elements in a Circular Array
 ### Neetcode 150
 217. Contains Duplicate
 242. Valid Anagram
