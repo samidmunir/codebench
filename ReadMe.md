@@ -9,6 +9,7 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 3427. Sum of Varivable Length Subarrays
 3452. Sum of Good Numbers
 3417. Zigzag Grid Traversal With Skip
+3432. Count Partitions with Even Sum Difference
 ### Neetcode 150
 217. Contains Duplicate
 242. Valid Anagram
