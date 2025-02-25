@@ -17,16 +17,10 @@ public class Solution {
         while (i < n - 1) {
             int j = i + 1;
             while (j < n) {
-                // System.out.println("\ni: " + i + ", j: " + j);
                 int[] subArray = Arrays.copyOfRange(nums, i, j + 1);
-                // System.out.println("\tsubArray[]: " + Arrays.toString(subArray));
                 int product = product(subArray);
                 int gcd = gcd(subArray);
                 int lcm = lcm(subArray);
-                // System.out.println("\tproduct: " + product);
-                // System.out.println("\tgcd: " + gcd);
-                // System.out.println("\tlcm: " + lcm);
-                // System.out.println("\tgcd x lcm: " + (lcm * gcd));
                 if (lcm * gcd == product) {
                     currentLength = subArray.length;
                     maxLength = Math.max(maxLength, currentLength);
