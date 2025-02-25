@@ -5,6 +5,7 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ## Data Structures & Algorithms
 ## Leetcode Mastery
 ### Arrays
+3392. Count Subarrays of Length Three With a Condition
 3402. Minimum Operations to Make Columns Strictly Increasing
 3411. Maximum Subarray With Equal Products
 3417. Zigzag Grid Traversal With Skip
