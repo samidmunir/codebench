@@ -5,6 +5,7 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ## Data Structures & Algorithms
 ## Leetcode Mastery
 ### Arrays
+3379. Transformed Array *(incomplete)*
 3392. Count Subarrays of Length Three With a Condition
 3396. Minimum Number of Operations to Make Elements in Array Distinct
 3402. Minimum Operations to Make Columns Strictly Increasing
