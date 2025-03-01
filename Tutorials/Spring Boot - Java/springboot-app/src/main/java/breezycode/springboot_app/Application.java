@@ -18,5 +18,4 @@ public class Application {
 		WelcomeMessage welcomeMessage = (WelcomeMessage) context.getBean("welcomeMessage");
 		System.out.println(welcomeMessage.sayWelcome());
 	}
-
 }
