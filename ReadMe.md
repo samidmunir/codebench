@@ -3,6 +3,13 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ## Projects
 * Uxcript
 ## Data Structures & Algorithms
+1. Static Array
+2. Dynamic Array
+3. Array Stack
+4. Array Queue
+5. Circular Array
+6. Singly Linkedlist
+7. Doubly Linkedlist
 ## Leetcode Mastery
 ### Arrays
 3379. Transformed Array *(incomplete)*
