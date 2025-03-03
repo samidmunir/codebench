@@ -31,6 +31,19 @@ public class App {
         singlyLL.removeTail();
         singlyLL.removeTail(); // REMOVAL ERROR
 
+        // Testing function insertAtIndex() (simultaneously)
+        singlyLL.insertHead(0);
+        singlyLL.insertTail(2);
+        singlyLL.insertHead(11);
+        singlyLL.insertTail(7);
+        singlyLL.insertHead(34);
+        singlyLL.insertAtIndex(0, 100); // INSERTION AT BEGINNING ERROR
+        singlyLL.insertAtIndex(5, 100); // INSERTION AT END ERROR
+        singlyLL.insertAtIndex(1, 35);
+        singlyLL.insertAtIndex(2, 36);
+        singlyLL.insertAtIndex(6, 3);
+        singlyLL.insertAtIndex(7, 4);
+
         System.out.println("\n---------------------------------------\n");
     }
 }

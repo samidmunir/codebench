@@ -112,7 +112,36 @@ public class SinglyLL {
         printSinglyLL();
     }
 
-    public void insertAtIndex(int index, int data) {}
+    public void insertAtIndex(int index, int data) {
+        System.out.println("\nSinglyLL.insertAtIndex(" + index + ", " + data + ") called...");
+        if (index <= 0 || index >= size) {
+            System.out.println("\t***ERROR***: Invalid index. Use insertHead() or insertTail() instead...");
+        } else if (index == 1) {
+            Node currentHead = head;
+            Node nextHead = currentHead.getNext();
+            Node newNode = new Node(data, nextHead);
+            currentHead.setNext(newNode);
+            head = currentHead;
+            size++;
+        } else {
+            Node tempHead = head;
+            int i = 0;
+            Node currentNode = tempHead;
+            while (currentNode != null) {
+                if (i == index - 1) {
+                    break;
+                }
+                currentNode = currentNode.getNext();
+                i++;
+            }
+            Node nextNode = currentNode.getNext();
+            Node newNode = new Node(data, nextNode);
+            currentNode.setNext(newNode);
+            head = tempHead;
+            size++;
+        }
+        printSinglyLL();
+    }
 
     /*
     @Override
