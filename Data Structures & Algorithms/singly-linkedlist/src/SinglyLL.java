@@ -19,22 +19,36 @@ public class SinglyLL {
 
     private void printSinglyLL() {
         if (isNull()) {
-            System.out.println("Singly Linkedlist: NULL");
+            System.out.println("Singly Linkedlist: { NULL }");
         } else if (isEmpty()) {
-            System.out.println("Singly Linkedlist: HEAD -> NULL");
+            System.out.println("Singly Linkedlist: { HEAD -> NULL }");
         } else {
-            System.out.print("Singly Linkedlist: HEAD ");
+            System.out.print("Singly Linkedlist: { HEAD -> ");
             Node currentNode = head;
             while (currentNode != null) {
-                System.out.print(" -> " + currentNode.getData());
+                System.out.print(currentNode.getData() + " -> ");
                 currentNode = currentNode.getNext();
             }
-            System.out.println("NULL");
+            System.out.println("NULL }");
         }
         printSinglyLLStats();
     }
 
-    public void insertHead(int data) {}
+    public void insertHead(int data) {
+        if (isNull()) {
+            head = new Node(data, null);
+            size = 1;
+        } else if (isEmpty()) {
+            head.setData(data);
+            size = 1;
+        } else {
+            Node currentHead = head;
+            Node newHead = new Node(data, currentHead);
+            head = newHead;
+            size++;
+        }
+        printSinglyLL();
+    }
 
     public void removeHead() {}
 
