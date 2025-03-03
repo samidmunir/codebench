@@ -35,6 +35,7 @@ public class SinglyLL {
     }
 
     public void insertHead(int data) {
+        System.out.println("\nSinglyLL.insertHead(" + data + ") called...");
         if (isNull()) {
             head = new Node(data, null);
             size = 1;
@@ -50,7 +51,19 @@ public class SinglyLL {
         printSinglyLL();
     }
 
-    public void removeHead() {}
+    public void removeHead() {
+        System.out.println("\nSinglyLL.removeHead() called...");
+        if (isNull() || isEmpty()) {
+            System.out.println("\n***ERROR***: Cannot remove from NULL or empty list.");
+        } else if (size == 1) {
+            head = null;
+            size = 0;
+        } else {
+            head = head.getNext();
+            size--;
+        }
+        printSinglyLL();
+    }
 
     public void insertTail(int data) {}
 

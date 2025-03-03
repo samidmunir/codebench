@@ -12,5 +12,9 @@ public class App {
         singlyLL.insertHead(7);
 
         // Testing function removeHead()
+        singlyLL.removeHead();
+        singlyLL.removeHead();
+        singlyLL.removeHead();
+        singlyLL.removeHead();
     }
 }
