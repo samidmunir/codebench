@@ -23,5 +23,14 @@ public class App {
         singlyLL.insertTail(3);
         singlyLL.insertTail(5);
         singlyLL.insertTail(7);
+
+        // Testing function removeTail()
+        singlyLL.removeTail();
+        singlyLL.removeTail();
+        singlyLL.removeTail();
+        singlyLL.removeTail();
+        singlyLL.removeTail(); // REMOVAL ERROR
+
+        System.out.println("\n---------------------------------------\n");
     }
 }

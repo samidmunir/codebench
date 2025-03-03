@@ -91,7 +91,26 @@ public class SinglyLL {
         printSinglyLL();
     }
 
-    public void removeTail() {}
+    public void removeTail() {
+        System.out.println("\nSinglyLL.removeTail() called...");
+        if (isNull() || isEmpty()) {
+            System.out.println("\n***ERROR***: Cannot remove from NULL or empty list.");
+        } else if (size == 1) {
+            head = null;
+            size = 0;
+        } else {
+            Node currentNode = head;
+            while (currentNode != null) {
+                if (currentNode.getNext().getNext() == null) {
+                    break;
+                }
+                currentNode = currentNode.getNext();
+            }
+            currentNode.setNext(null);
+            size--;
+        }
+        printSinglyLL();
+    }
 
     public void insertAtIndex(int index, int data) {}
 
