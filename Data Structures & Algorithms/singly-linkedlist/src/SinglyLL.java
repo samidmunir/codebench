@@ -65,7 +65,31 @@ public class SinglyLL {
         printSinglyLL();
     }
 
-    public void insertTail(int data) {}
+    public void insertTail(int data) {
+        System.out.println("\nSinglyLL.insertTail(" + data + ") called...");
+        if (isNull()) {
+            head = new Node(data, null);
+            size = 1;
+        } else if (isEmpty()) {
+            head.setData(data);
+            head.setNext(null);
+            size = 1;
+        } else if (size == 1) {
+            head.setNext(new Node(data, null));
+            size = 2;
+        } else {
+            Node currentNode = head;
+            while (currentNode != null) {
+                if (currentNode.getNext() == null) {
+                    currentNode.setNext(new Node(data, null));
+                    size++;
+                    break;
+                }
+                currentNode = currentNode.getNext();
+            }
+        }
+        printSinglyLL();
+    }
 
     public void removeTail() {}
 

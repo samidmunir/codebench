@@ -16,5 +16,12 @@ public class App {
         singlyLL.removeHead();
         singlyLL.removeHead();
         singlyLL.removeHead();
+        singlyLL.removeHead(); // REMOVAL ERROR
+
+        // Testing function insertTail()
+        singlyLL.insertTail(1);
+        singlyLL.insertTail(3);
+        singlyLL.insertTail(5);
+        singlyLL.insertTail(7);
     }
 }
