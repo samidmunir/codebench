@@ -44,6 +44,14 @@ public class App {
         singlyLL.insertAtIndex(6, 3);
         singlyLL.insertAtIndex(7, 4);
 
+        // Testing function removeAtIndex()
+        singlyLL.removeAtIndex(0); // REMOVAL AT BEGINNING ERROR
+        singlyLL.removeAtIndex(10); // REMOVAL AT END ERROR
+        singlyLL.removeAtIndex(1); // REMOVAL AT INDEX 1
+        singlyLL.removeAtIndex(4);
+        singlyLL.removeAtIndex(2);
+        singlyLL.removeAtIndex(3);
+
         System.out.println("\n---------------------------------------\n");
     }
 }

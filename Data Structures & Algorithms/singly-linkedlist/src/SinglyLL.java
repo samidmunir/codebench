@@ -143,6 +143,38 @@ public class SinglyLL {
         printSinglyLL();
     }
 
+    public void removeAtIndex(int index) {
+        System.out.println("\nSinglyLL.removeAtIndex(" + index + ") called...");
+        if (index <= 0 || index >= size) {
+            System.out.println("\t***ERROR***: Invalid index. Use removeHead() or removeTail() instead...");
+        } else if (index == 1) {
+            Node tempHead = head;
+            Node currentHead = tempHead;
+            Node nodeToDelete = currentHead.getNext();
+            Node nextNode = nodeToDelete.getNext();
+            currentHead.setNext(nextNode);
+            head = tempHead;
+            size--;
+        } else {
+            Node tempHead = head;
+            int i = 0;
+            Node currentNode = tempHead;
+            while (currentNode != null) {
+                if (i == index - 1) {
+                    break;
+                }
+                currentNode = currentNode.getNext();
+                i++;
+            }
+            Node nodeToDelete = currentNode.getNext();
+            Node nextNode = nodeToDelete.getNext();
+            currentNode.setNext(nextNode);
+            head = tempHead;
+            size--;
+        }
+        printSinglyLL();
+    }
+
     /*
     @Override
     public String toString() {}
