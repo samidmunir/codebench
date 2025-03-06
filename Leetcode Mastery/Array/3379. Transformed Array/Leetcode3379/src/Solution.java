@@ -1,6 +1,6 @@
 /*
- * Runtime: ms
- * Memory: MB
+ * Runtime: 1ms
+ * Memory: 44.80MB
  */
 
 public class Solution {
@@ -8,34 +8,56 @@ public class Solution {
         if (nums.length == 1) {
             return nums;
         }
-        
-        int[] result = new int[nums.length];
 
-        for (int i = 0; i < nums.length; i++) {
+        int n = nums.length;
+        int[] result = new int[n];
+
+        int i = 0;
+        while (i < nums.length) {
             if (nums[i] > 0) {
-                int index = i;
+                int currentIndex = i;
                 int step = nums[i];
-                if (index + step >= result.length) {
-                    int diff = Math.abs(result.length - (index + step));
-                    result[i] = nums[diff];
+                int newIndexToBe = currentIndex + step;
+                if (newIndexToBe >= n) {
+                    int count = 0;
+                    int index = i;
+                    while (count < step) {
+                        if (index >= n - 1) {
+                            index = 0;
+                        } else {
+                            index++;
+                        }
+                        count++;
+                    }
+                    result[i] = nums[index];
                 } else {
-                    result[i] = nums[index + step];
-                } 
+                    result[i] = nums[newIndexToBe];
+                }
             } else if (nums[i] < 0) {
-                int index = i;
+                int currentIndex = i;
                 int step = Math.abs(nums[i]);
-                if (index - step < 0) {
-                    int toZero = i - 0;
-                    int diff = step - toZero;
-                    result[i] = nums[nums.length - diff]; 
+                int newIndexToBe = currentIndex - step;
+                if (newIndexToBe < 0) {
+                    int count = 0;
+                    int index = i;
+                    while (count < step) {
+                        if (index <= 0) {
+                            index = n - 1;
+                        } else {
+                            index--;
+                        }
+                        count++;
+                    }
+                    result[i] = nums[index];
                 } else {
-                    result[i] = nums[index - step];
+                    result[i] = nums[newIndexToBe];
                 }
             } else {
                 result[i] = nums[i];
             }
+            i++;
         }
-
+        
         return result;
     }
 }

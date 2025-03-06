@@ -46,11 +46,18 @@ public class App {
         System.out.println("nums[]: " + Arrays.toString(nums2));
         System.out.println("output: " + Arrays.toString(output2) + "\n");
 
-        // Test Case 3
+        // // Test Case 3
         int[] nums3 = {-10};
         int[] output3 = solution.constructTransformedArray(nums3);
         System.out.println("Test Case 3");
         System.out.println("nums[]: " + Arrays.toString(nums3));
         System.out.println("output: " + Arrays.toString(output3) + "\n");
+
+        // Test Case 4
+        int[] nums4 = {5, -3, 2, 1};
+        int[] output4 = solution.constructTransformedArray(nums4);
+        System.out.println("Test Case 4");
+        System.out.println("nums[]: " + Arrays.toString(nums4));
+        System.out.println("output: " + Arrays.toString(output4) + "\n");
     }
 }
