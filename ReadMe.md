@@ -2,6 +2,7 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 # Codebench
 ## Projects
 * Uxcript
+* Blog Marshal
 ## Data Structures & Algorithms
 1. Static Array
 2. Dynamic Array
@@ -12,6 +13,7 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 7. Doubly Linkedlist
 ## Leetcode Mastery
 ### Arrays
+3364. Minimum Positive Sum Subarray
 3379. Transformed Array
 3392. Count Subarrays of Length Three With a Condition
 3396. Minimum Number of Operations to Make Elements in Array Distinct
@@ -33,3 +35,5 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ### Spring Boot - Java (Maven)
 * Hello World
 * Runnerz
+### SDL - C++
+* SDL_TEST
