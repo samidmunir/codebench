@@ -3,6 +3,7 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ## Projects
 * Uxcript
 * Blog Marshal
+* ATC Radar Simulation
 ## Data Structures & Algorithms
 1. Static Array
 2. Dynamic Array
