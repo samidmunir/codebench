@@ -35,5 +35,3 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 ### Spring Boot - Java (Maven)
 * Hello World
 * Runnerz
-### SDL - C++
-* SDL_TEST
