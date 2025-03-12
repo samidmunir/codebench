@@ -38,6 +38,8 @@ def main() -> None:
             elif event.type == PG.KEYDOWN:
                 if event.key == PG.K_ESCAPE:
                     RUNNING = False
+            
+            MENU.handle_event(event)
     
     PG.quit()
 
