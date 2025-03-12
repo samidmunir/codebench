@@ -18,10 +18,12 @@ SCREEN = PG.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 PG.display.set_caption('ATC Radar Simulation')
 CLOCK = PG.time.Clock()
 
-MENU = Menu(surface = SCREEN, font = FONT)
-GRID = Grid(surface = SCREEN)
-
 AIRCRAFT = Aircraft(SCREEN, 'DAL527', 'A359', 500.0, 500.0, 90.0, 250.0, 12000)
+AIRCRAFTS = []
+AIRCRAFTS.append(AIRCRAFT)
+
+MENU = Menu(surface = SCREEN, font = FONT, aircrafts = AIRCRAFTS)
+GRID = Grid(surface = SCREEN)
 
 def main() -> None:
     RUNNING = True
@@ -44,10 +46,10 @@ def main() -> None:
             elif event.type == PG.KEYDOWN:
                 if event.key == PG.K_ESCAPE:
                     RUNNING = False
-            
-            if event.type == PG.MOUSEBUTTONDOWN:
-                if AIRCRAFT.x - 10 < event.pos[0] < AIRCRAFT.x + 10 and AIRCRAFT.y - 10 < event.pos[1] < AIRCRAFT.y + 10:
-                    AIRCRAFT.toggle_selection()
+            elif event.type == PG.MOUSEBUTTONDOWN:
+                for aircraft in AIRCRAFTS:
+                    if aircraft.x - 10 < event.pos[0] < aircraft.x + 10 and aircraft.y - 10 < event.pos[1] < aircraft.y + 10:
+                        aircraft.toggle_selection()
 
             MENU.handle_event(event)
     

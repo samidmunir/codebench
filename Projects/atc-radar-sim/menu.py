@@ -59,13 +59,14 @@ class InputField:
                 self.text += event.unicode
 
 class Menu:
-    def __init__(self, surface: PG.Surface, font: PG.font):
+    def __init__(self, surface: PG.Surface, font: PG.font, aircrafts):
         self.surface = surface
         self.font = font
+        self.aircrafts = aircrafts
 
         # Button positions
         self.buttons = [
-            Button(surface, "Confirm", 490, SCREEN_HEIGHT - MENU_HEIGHT + 25, 120, 30, font),
+            Button(surface, "Confirm", 490, SCREEN_HEIGHT - MENU_HEIGHT + 25, 120, 30, font, self.apply_commands),
         ]
 
         self.heading_input = InputField(surface, 130, SCREEN_HEIGHT - MENU_HEIGHT + 25, 80, 30, font, "")
@@ -100,3 +101,15 @@ class Menu:
 
         for button in self.buttons:
             button.handle_event(event)
+        
+    def apply_commands(self):
+        for aircraft in self.aircrafts:
+            if aircraft.selected:
+                heading = int(self.heading_input.text) if self.heading_input.text else None
+                speed = int(self.speed_input.text) if self.speed_input.text else None
+                altitude = int(self.altitude_input.text) if self.altitude_input.text else None
+
+                aircraft.set_target(heading, speed, altitude)
+                self.heading_input.text = ""
+                self.speed_input.text = ""
+                self.altitude_input.text = ""

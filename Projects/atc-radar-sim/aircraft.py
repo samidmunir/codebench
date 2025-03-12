@@ -2,11 +2,14 @@ import pygame as PG
 import math as MATH
 
 from config import (
-    SCREEN_WIDTH,
-    SCREEN_HEIGHT,
     AIRCRAFT_SIZE,
     AIRCRAFT_RING_SIZE,
     AIRCRAFT_SPEED_SCALAR,
+    AIRCRAFT_SPEED_CHNG_SCALAR,
+    AIRCRAFT_TURN_RATE_SCALAR,
+    AIRCRAFT_ALTITUDE_CHNG_SCALAR,
+    AIRCRAFT_HEADING_VECTOR_LENGTH,
+    AIRCRAFT_TARGET_HEADING_VECTOR_LENGTH,
     TEXT_COLOR
 )
 
@@ -22,9 +25,13 @@ class Aircraft:
         self.speed = speed
         self.altitude = altitude
         self.selected = False
+        self.target_heading = self.heading
+        self.target_speed = self.speed
+        self.target_altitude = self.altitude
     
     def draw(self):
         heading_rad = MATH.radians((self.heading - 90) % 360)
+        target_heading_rad = MATH.radians((self.target_heading - 90) % 360)
 
         nose = (self.x + MATH.cos(heading_rad) * AIRCRAFT_SIZE, self.y + MATH.sin(heading_rad) * AIRCRAFT_SIZE)
         left_wing = (self.x + MATH.cos(heading_rad + 2.5) * AIRCRAFT_SIZE, self.y + MATH.sin(heading_rad + 2.5) * AIRCRAFT_SIZE)
@@ -32,25 +39,95 @@ class Aircraft:
 
         PG.draw.polygon(self.surface, self.color, [nose, left_wing, right_wing])
 
+        if self.heading != self.target_heading:
+            PG.draw.line(self.surface, self.color, (self.x, self.y), (self.x + MATH.cos(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH, self.y + MATH.sin(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH), width = 2)
+            PG.draw.line(self.surface, (0, 255, 0), (self.x, self.y), (self.x + MATH.cos(target_heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH, self.y + MATH.sin(target_heading_rad) * AIRCRAFT_TARGET_HEADING_VECTOR_LENGTH), width = 2)
+        else:
+            PG.draw.line(self.surface, self.color, (self.x, self.y), (self.x + MATH.cos(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH, self.y + MATH.sin(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH), width = 2)
+
         if self.selected:
             PG.draw.circle(self.surface, (0, 255, 255), (int(self.x), int(self.y)), AIRCRAFT_RING_SIZE, width = 2)
 
         label1 = f'{self.flight_number} - {self.type}'
-        label2 = f'{self.heading}° | {self.speed}kts | {self.altitude}ft'
+        label2 = None
+        if self.altitude >= 18000:
+            altitude_text = 'FL' + str(int(self.altitude / 100))
+            label2 = f'{int(self.heading)}° | {int(self.speed)}kts | {altitude_text}'
+        else:
+            label2 = f'{int(self.heading)}° | {int(self.speed)}kts | {int(self.altitude)}ft'
         font = PG.font.Font(None, 16)
         text_surface1 = font.render(label1, True, TEXT_COLOR)
         text_surface2 = font.render(label2, True, TEXT_COLOR)
-        self.surface.blit(text_surface1, (self.x - 5, self.y - 45))
-        self.surface.blit(text_surface2, (self.x - 5, self.y - 30))
+        self.surface.blit(text_surface1, (self.x - 5, self.y - 55))
+        self.surface.blit(text_surface2, (self.x - 5, self.y - 40))
     
     def toggle_selection(self):
         self.selected = not self.selected
 
     def update(self):
+        """
         heading_rad = MATH.radians((self.heading - 90) % 360)
         self.x += MATH.cos(heading_rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)
         self.y += MATH.sin(heading_rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)
 
         if self.x < 0 or self.x > SCREEN_WIDTH or self.y < 0 or self.y > SCREEN_HEIGHT:
             self.x = self.x % SCREEN_WIDTH
-            self.y = self.y % SCREEN_HEIGHT
+            self.y = self.y % SCREEN_HEIGHT"
+        """
+
+        """
+        if self.heading != self.target_heading:
+            diff = (self.target_heading - self.heading + 360) % 360
+            if diff > 180:
+                self.heading -= min(1, abs(diff))
+            else:
+                self.heading += min(1, abs(diff))
+            self.heading %= 360
+
+        if self.speed != self.target_speed:
+            speed_diff = self.target_speed - self.speed
+            self.speed += min(5, max(-5, speed_diff))
+
+        if self.altitude != self.target_altitude:
+            altitude_diff = self.target_altitude - self.altitude
+            self.altitude += min(100, max(-100, altitude_diff))
+        
+        heading_rad = MATH.radians((self.heading - 90) % 360)
+        self.x += MATH.cos(heading_rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)
+        self.y += MATH.sin(heading_rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)"
+        """
+
+        # Gradual heading adjustment (max ±3° per frame)
+        if self.heading != self.target_heading:
+            diff = (self.target_heading - self.heading + 360) % 360  # Get shortest rotation
+            step = min(AIRCRAFT_TURN_RATE_SCALAR, abs(diff))  # Limit heading change to 3° per frame
+            if diff > 180:
+                self.heading -= step  # Rotate left
+            else:
+                self.heading += step  # Rotate right
+            self.heading %= 360  # Keep heading within 0-360
+
+        # Gradual speed adjustment (max ±2 knots per frame)
+        if self.speed != self.target_speed:
+            speed_diff = self.target_speed - self.speed
+            step = min(AIRCRAFT_SPEED_CHNG_SCALAR, abs(speed_diff))  # Limit speed change to 2 knots per frame
+            self.speed += step if speed_diff > 0 else -step
+
+        # Gradual altitude adjustment (max ±50 feet per frame)
+        if self.altitude != self.target_altitude:
+            altitude_diff = self.target_altitude - self.altitude
+            step = min(AIRCRAFT_ALTITUDE_CHNG_SCALAR, abs(altitude_diff))  # Limit altitude change to 50 feet per frame
+            self.altitude += step if altitude_diff > 0 else -step
+
+        # Update position based on heading & speed
+        rad = MATH.radians((self.heading - 90) % 360)
+        self.x += MATH.cos(rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)  # Reduced scale for smoother movement
+        self.y += MATH.sin(rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)
+
+    def set_target(self, heading = None, speed = None, altitude = None):
+        if heading is not None:
+            self.target_heading = heading % 360
+        if speed is not None:
+            self.target_speed = max(100, min(600, speed))
+        if altitude is not None:
+            self.target_altitude = max(1000, min(40000, altitude))
