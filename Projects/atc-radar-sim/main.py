@@ -1,42 +1,45 @@
-import random as RANDOM
-import string as STRING
 import pygame as PG
 
 from config import (
-    FPS,
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     BACKGROUND_COLOR,
-    GRID_COLOR,
-    GRID_SPACING,
+    FPS,
 )
 
-def draw_grid(surface: PG.Surface):
-    for x in range(0, SCREEN_WIDTH, GRID_SPACING):
-        PG.draw.line(surface, GRID_COLOR, (x, 0), (x, SCREEN_HEIGHT), 1)
-    for y in range(0, SCREEN_HEIGHT, GRID_SPACING):
-        PG.draw.line(surface, GRID_COLOR, (0, y), (SCREEN_WIDTH, y), 1)
+from menu import Menu
+from grid import Grid
 
-def main():
-    PG.init()
-    SCREEN = PG.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), PG.SRCALPHA)
-    PG.display.set_caption("ATC Radar Simulation")
-    CLOCK = PG.time.Clock()
+PG.init()
+PG.font.init()
+FONT = PG.font.Font(None, 18)
+SCREEN = PG.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+PG.display.set_caption('ATC Radar Simulation')
+CLOCK = PG.time.Clock()
 
+MENU = Menu(surface = SCREEN, font = FONT)
+GRID = Grid(surface = SCREEN)
+
+def main() -> None:
     RUNNING = True
 
     while RUNNING:
-        for event in PG.event.get():
-            if event.type == PG.QUIT:
-                RUNNING = False
+        SCREEN.fill(color = BACKGROUND_COLOR)
         
-        SCREEN.fill(BACKGROUND_COLOR)
-        draw_grid(surface = SCREEN)
+        MENU.draw()
+        GRID.draw()
 
         PG.display.flip()
         CLOCK.tick(FPS)
+
+        for event in PG.event.get():
+            if event.type == PG.QUIT:
+                RUNNING = False
+            elif event.type == PG.KEYDOWN:
+                if event.key == PG.K_ESCAPE:
+                    RUNNING = False
     
     PG.quit()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

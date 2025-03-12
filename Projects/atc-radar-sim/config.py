@@ -1,9 +1,17 @@
-# General configuration
+# General settings
 FPS = 60
 
-# Screen configuration
-SCREEN_WIDTH = 1350
-SCREEN_HEIGHT = 800
+# Screen settings
+SCREEN_WIDTH = 1300
+SCREEN_HEIGHT = 750
 BACKGROUND_COLOR = (38, 38, 38)
-GRID_COLOR = (64, 64, 64)
-GRID_SPACING = 15
+
+# Menu settings
+MENU_WIDTH = 1300
+MENU_HEIGHT = 50
+MENU_BACKGROUND_COLOR = (51, 51, 51)
+TEXT_COLOR = (255, 255, 255)
+
+# Grid settings
+GRID_COLOR = (50, 50, 50)
+GRID_SPACING = 20
