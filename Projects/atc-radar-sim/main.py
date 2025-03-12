@@ -9,6 +9,7 @@ from config import (
 
 from menu import Menu
 from grid import Grid
+from aircraft import Aircraft
 
 PG.init()
 PG.font.init()
@@ -20,6 +21,8 @@ CLOCK = PG.time.Clock()
 MENU = Menu(surface = SCREEN, font = FONT)
 GRID = Grid(surface = SCREEN)
 
+AIRCRAFT = Aircraft(SCREEN, 'DAL527', 'A359', 500.0, 500.0, 90.0, 250.0, 12000)
+
 def main() -> None:
     RUNNING = True
 
@@ -28,6 +31,9 @@ def main() -> None:
         
         MENU.draw()
         GRID.draw()
+
+        AIRCRAFT.update()
+        AIRCRAFT.draw()
 
         PG.display.flip()
         CLOCK.tick(FPS)
@@ -39,6 +45,10 @@ def main() -> None:
                 if event.key == PG.K_ESCAPE:
                     RUNNING = False
             
+            if event.type == PG.MOUSEBUTTONDOWN:
+                if AIRCRAFT.x - 10 < event.pos[0] < AIRCRAFT.x + 10 and AIRCRAFT.y - 10 < event.pos[1] < AIRCRAFT.y + 10:
+                    AIRCRAFT.toggle_selection()
+
             MENU.handle_event(event)
     
     PG.quit()
