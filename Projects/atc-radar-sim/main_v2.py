@@ -1,6 +1,6 @@
 import pygame as PG
 
-from config import (
+from config_v2 import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     BACKGROUND_COLOR,
@@ -8,7 +8,7 @@ from config import (
 )
 
 from menu import Menu
-from grid import Grid
+from grid_v2 import Grid
 from aircraft import Aircraft
 from airport import Airport, Runway
 
