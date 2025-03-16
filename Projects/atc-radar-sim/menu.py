@@ -13,18 +13,19 @@ from input_field import Input
 from label import Label
 
 class Menu:
-    def __init__(self, surface: PG.Surface, font: PG.font):
+    def __init__(self, surface: PG.Surface, font: PG.font, aircrafts):
         self.surface = surface
         self.font = font
+        self.aircrafts = aircrafts
         
         self.buttons = [
-            Button(surface = surface, text = 'Confirm', x = 480.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 120.0, height = 30.0, font = font, action = None)
+            Button(surface = surface, text = 'Confirm', x = 480.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 120.0, height = 30.0, font = font, action = self.apply_commands)
         ]
 
         self.inputs = [
-            Input(surface = surface, font = font, x = 120.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = '000'),
-            Input(surface = surface, font = font, x = 240.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = '000'),
-            Input(surface = surface, font = font, x = 360.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = '000'),
+            Input(surface = surface, font = font, x = 120.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = ''),
+            Input(surface = surface, font = font, x = 240.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = ''),
+            Input(surface = surface, font = font, x = 360.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = ''),
         ]
 
         self.labels = [
@@ -46,9 +47,23 @@ class Menu:
             label.draw()
 
     def handle_event(self, event):
-        self.inputs[0].handle_event(event)
-        self.inputs[1].handle_event(event)
-        self.inputs[2].handle_event(event)
+        for input_field in self.inputs:
+            input_field.handle_event(event)
 
         for button in self.buttons:
             button.handle_event(event)
+
+        if event.type == PG.KEYDOWN and event.key == PG.K_RETURN:
+            self.apply_commands()
+
+    def apply_commands(self):
+        for AIRCRAFT in self.aircrafts:
+            if AIRCRAFT.selected:
+                heading = int(self.inputs[0].text) if self.inputs[0].text else None
+                speed = int(self.inputs[1].text) if self.inputs[1].text else None
+                altitude = int(self.inputs[2].text) if self.inputs[2].text else None
+                AIRCRAFT.set_target(heading, speed, altitude)
+                self.inputs[0].text = ''
+                self.inputs[1].text = ''
+                self.inputs[2].text = ''
+                AIRCRAFT.toggle_selection()

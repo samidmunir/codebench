@@ -9,7 +9,7 @@ from config_v2 import (
 
 from menu_v2 import Menu
 from grid_v2 import Grid
-from aircraft import Aircraft
+from aircraft_v2 import Aircraft
 from airport import Airport, Runway
 
 PG.init()

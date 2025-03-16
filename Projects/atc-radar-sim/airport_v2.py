@@ -1,8 +1,8 @@
 import pygame as PG
 import math as MATH
 
-from config import (
-    MENU_TEXT_COLOR,
+from config_v2 import (
+    TEXT_COLOR,
     RUNWAY_COLOR,
     AIRPORT_SIZE,
 )
@@ -33,7 +33,7 @@ class Runway:
 
         # Draw the runway label at one end
         font = PG.font.Font(None, 18)
-        label_surface = font.render(self.label, True, MENU_TEXT_COLOR)
+        label_surface = font.render(self.label, True, TEXT_COLOR)
         surface.blit(label_surface, (x1 + 5, y1 - 10))
 
 
