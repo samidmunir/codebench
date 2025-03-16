@@ -10,8 +10,10 @@ from config import (
     AIRCRAFT_ALTITUDE_CHNG_SCALAR,
     AIRCRAFT_HEADING_VECTOR_LENGTH,
     AIRCRAFT_TARGET_HEADING_VECTOR_LENGTH,
-    TEXT_COLOR
+    TEXT_COLOR,
 )
+
+from compass import Compass
 
 class Aircraft:
     def __init__(self, surface: PG.Surface, flight_number: str, type: str, x: float, y: float, heading: float, speed: float, altitude: float):
@@ -21,6 +23,8 @@ class Aircraft:
         self.type = type
         self.x = x
         self.y = y
+        self.trail = []
+        self.last_trail_position = (self.x, self.y)
         self.heading = heading
         self.speed = speed
         self.altitude = altitude
@@ -39,6 +43,8 @@ class Aircraft:
 
         PG.draw.polygon(self.surface, self.color, [nose, left_wing, right_wing])
 
+        self.draw_trail(self.surface)
+
         if self.heading != self.target_heading:
             PG.draw.line(self.surface, self.color, (self.x, self.y), (self.x + MATH.cos(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH, self.y + MATH.sin(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH), width = 2)
             PG.draw.line(self.surface, (0, 255, 0), (self.x, self.y), (self.x + MATH.cos(target_heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH, self.y + MATH.sin(target_heading_rad) * AIRCRAFT_TARGET_HEADING_VECTOR_LENGTH), width = 2)
@@ -47,6 +53,8 @@ class Aircraft:
 
         if self.selected:
             PG.draw.circle(self.surface, (0, 255, 255), (int(self.x), int(self.y)), AIRCRAFT_RING_SIZE, width = 2)
+        #     self.compass = Compass(self.surface, 60, SCREEN_HEIGHT - MENU_HEIGHT / 2)
+        #     self.compass.draw()
 
         label1 = f'{self.flight_number} - {self.type}'
         label2 = None
@@ -124,6 +132,16 @@ class Aircraft:
         self.x += MATH.cos(rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)  # Reduced scale for smoother movement
         self.y += MATH.sin(rad) * (self.speed * AIRCRAFT_SPEED_SCALAR)
 
+        trail_spacing = 10
+        tx = self.x - self.last_trail_position[0]
+        ty = self.y - self.last_trail_position[1]
+        t_distance = MATH.sqrt(tx ** 2 + ty ** 2)
+        if t_distance > trail_spacing:
+            self.trail.append((self.x, self.y))
+            self.last_trail_position = (self.x, self.y)
+        if len(self.trail) > 100:
+            self.trail.pop(0)
+
     def set_target(self, heading = None, speed = None, altitude = None):
         if heading is not None:
             self.target_heading = heading % 360
@@ -131,3 +149,24 @@ class Aircraft:
             self.target_speed = max(100, min(600, speed))
         if altitude is not None:
             self.target_altitude = max(1000, min(40000, altitude))
+
+    def draw_trail(self, screen):
+        # Initialize a persistent trail surface once
+        if not hasattr(self, "trail_surface"):
+            self.trail_surface = PG.Surface((screen.get_width(), screen.get_height()), PG.SRCALPHA)
+            self.trail_surface.fill((0, 0, 0, 0))  # Fully transparent background
+
+        # Fade out the trail over time for a smooth effect
+        self.trail_surface.fill((0, 0, 0, 10), special_flags=PG.BLEND_RGBA_MULT)
+
+        # Draw the current trail points onto the trail surface
+        for i, (tx, ty) in enumerate(self.trail):
+            factor = i / len(self.trail) if len(self.trail) > 0 else 0
+            red = int((1 - factor) * 255)
+            blue = int(factor * 255)
+            alpha = int((1 - factor) * 128)  # Adjust alpha for transparency
+            color = (red, 0, blue, alpha)
+            PG.draw.circle(self.trail_surface, color, (int(tx), int(ty)), 5)
+
+        # Blit the trail surface onto the main screen
+        screen.blit(self.trail_surface, (0, 0))

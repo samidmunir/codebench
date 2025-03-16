@@ -63,10 +63,10 @@ public class App {
 
         // Test Case 3
         List<Integer> nums3 = new ArrayList<>();
-        nums3.add(-2);
-        nums3.add(2);
-        nums3.add(-3);
         nums3.add(1);
+        nums3.add(2);
+        nums3.add(3);
+        nums3.add(4);
         int l3 = 2;
         int r3 = 4;
         int output3 = solution.minimumSumSubarray(nums3, l3, r3);
@@ -74,6 +74,6 @@ public class App {
         System.out.println("nums<>: " + nums3.toString());
         System.out.println("\tl: " + l3);
         System.out.println("\tr: " + r3);
-        System.out.println("output: " + output3 + "\n");
+        System.out.println("output: " + output3 + "\n");   
     }
 }

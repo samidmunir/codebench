@@ -8,6 +8,8 @@ from config import (
     TEXT_COLOR,
 )
 
+from compass import Compass
+
 class Button:
     def __init__(self, surface, text, x, y, width, height, font, action = None):
         self.surface = surface
@@ -64,52 +66,47 @@ class Menu:
         self.font = font
         self.aircrafts = aircrafts
 
-        # Button positions
+        # Compass for selecting heading
+        self.compass = Compass(surface, 750, SCREEN_HEIGHT - MENU_HEIGHT // 2)
+
+        # Button to confirm heading
         self.buttons = [
-            Button(surface, "Confirm", 490, SCREEN_HEIGHT - MENU_HEIGHT + 25, 120, 30, font, self.apply_commands),
+            Button(surface, "Confirm HDG", 900, SCREEN_HEIGHT - MENU_HEIGHT + 25, 120, 30, font, self.apply_heading),
         ]
 
-        self.heading_input = InputField(surface, 130, SCREEN_HEIGHT - MENU_HEIGHT + 25, 80, 30, font, "")
-        self.speed_input = InputField(surface, 250, SCREEN_HEIGHT - MENU_HEIGHT + 25, 80, 30, font, "")
-        self.altitude_input = InputField(surface, 370, SCREEN_HEIGHT - MENU_HEIGHT + 25, 80, 30, font, "")
-    
     def draw(self):
+        """Draw the menu, buttons, and compass."""
         PG.draw.rect(self.surface, MENU_BACKGROUND_COLOR, (0, SCREEN_HEIGHT - MENU_HEIGHT, MENU_WIDTH, MENU_HEIGHT))
 
-        # Draw buttons
         for button in self.buttons:
             button.draw()
 
-        # Draw input fields
-        self.heading_input.draw()
-        self.speed_input.draw()
-        self.altitude_input.draw()
-
-        # Draw labels
-        heading_label = self.font.render("Heading:", True, TEXT_COLOR)
-        speed_label = self.font.render("Speed:", True, TEXT_COLOR)
-        altitude_label = self.font.render("Altitude:", True, TEXT_COLOR)
-
-        self.surface.blit(heading_label, (130, SCREEN_HEIGHT - MENU_HEIGHT + 10))
-        self.surface.blit(speed_label, (250, SCREEN_HEIGHT - MENU_HEIGHT + 10))
-        self.surface.blit(altitude_label, (370, SCREEN_HEIGHT - MENU_HEIGHT + 10))
+        self.compass.draw()
 
     def handle_event(self, event):
-        self.heading_input.handle_event(event)
-        self.speed_input.handle_event(event)
-        self.altitude_input.handle_event(event)
+        """Handle input fields, buttons, and compass interactions."""
+        # Check if a new aircraft was selected
+        for aircraft in self.aircrafts:
+            if aircraft.selected:
+                self.compass.set_heading(aircraft.heading)  # Sync compass to aircraft heading
+        
+        self.compass.handle_event(event)
 
         for button in self.buttons:
             button.handle_event(event)
-        
-    def apply_commands(self):
+
+    def apply_heading(self):
+        """Set the heading of the selected aircraft using the compass."""
+        for aircraft in self.aircrafts:
+            if aircraft.selected:
+                aircraft.set_target(heading=int(self.compass.heading))
         for aircraft in self.aircrafts:
             if aircraft.selected:
                 heading = int(self.heading_input.text) if self.heading_input.text else None
                 speed = int(self.speed_input.text) if self.speed_input.text else None
                 altitude = int(self.altitude_input.text) if self.altitude_input.text else None
 
-                aircraft.set_target(heading, speed, altitude)
+                aircraft.set_target(heading if heading else int(self.compass.heading), speed, altitude)
                 self.heading_input.text = ""
                 self.speed_input.text = ""
                 self.altitude_input.text = ""
