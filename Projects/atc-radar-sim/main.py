@@ -8,6 +8,7 @@ from config import (
 )
 
 from grid import Grid
+from menu import Menu
 
 PG.init()
 PG.font.init()
@@ -17,6 +18,7 @@ PG.display.set_caption('ATC Radar Simulation')
 CLOCK = PG.time.Clock()
 
 GRID = Grid(surface = SCREEN)
+MENU = Menu(surface = SCREEN, font = FONT)
 
 def main():
     RUNNING = True
@@ -24,6 +26,7 @@ def main():
     while RUNNING:
         SCREEN.fill(color = BACKGROUND_COLOR)
         GRID.draw()
+        MENU.draw()
 
         PG.display.flip()
         CLOCK.tick(FPS)
@@ -34,6 +37,7 @@ def main():
             elif EVENT.type == PG.KEYDOWN:
                 if EVENT.key == PG.K_ESCAPE:
                     RUNNING = False
+            MENU.handle_event(event = EVENT)
 
     PG.quit()
 

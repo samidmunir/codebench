@@ -5,6 +5,7 @@ from config import (
     SCREEN_HEIGHT,
     GRID_COLOR,
     GRID_SPACING,
+    MENU_HEIGHT,
 )
 
 class Grid:
@@ -13,6 +14,6 @@ class Grid:
 
     def draw(self):
         for x in range(0, SCREEN_WIDTH, GRID_SPACING):
-            PG.draw.line(self.surface, GRID_COLOR, (x, 0), (x, SCREEN_HEIGHT))
-        for y in range(0, SCREEN_HEIGHT, GRID_SPACING):
+            PG.draw.line(self.surface, GRID_COLOR, (x, 0), (x, SCREEN_HEIGHT - MENU_HEIGHT))
+        for y in range(0, SCREEN_HEIGHT - MENU_HEIGHT, GRID_SPACING):
             PG.draw.line(self.surface, GRID_COLOR, (0, y), (SCREEN_WIDTH, y))

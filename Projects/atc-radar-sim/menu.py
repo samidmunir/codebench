@@ -2,111 +2,53 @@ import pygame as PG
 
 from config import (
     SCREEN_HEIGHT,
-    MENU_BACKGROUND_COLOR,
     MENU_WIDTH,
     MENU_HEIGHT,
-    TEXT_COLOR,
+    MENU_BACKGROUND_COLOR,
+    MENU_TEXT_COLOR,
 )
 
-from compass import Compass
-
-class Button:
-    def __init__(self, surface, text, x, y, width, height, font, action = None):
-        self.surface = surface
-        self.text = text
-        self.rect = PG.Rect(x, y, width, height)
-        self.color = (100, 100, 100)
-        self.hover_color = (150, 150, 150)
-        self.font = font
-        self.action = action
-        self.clicked = False
-    
-    def draw(self):
-        mouse_pos = PG.mouse.get_pos()
-        color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.color
-        PG.draw.rect(self.surface, color, self.rect)
-
-        text_surface = self.font.render(self.text, True, TEXT_COLOR)
-        text_rect = text_surface.get_rect(center = self.rect.center)
-        self.surface.blit(text_surface, text_rect)
-
-    def handle_event(self, event):
-        if event.type == PG.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
-            if self.action:
-                self.action()
-
-class InputField:
-    def __init__(self, surface, x, y, width, height, font, placeholder = '0'):
-        self.surface = surface
-        self.rect = PG.Rect(x, y, width, height)
-        self.font = font
-        self.text = placeholder
-        self.color = (200, 200, 200)
-        self.active = False
-    
-    def draw(self):
-        PG.draw.rect(self.surface, self.color, self.rect, 2)
-        text_surface = self.font.render(self.text, True, TEXT_COLOR)
-        self.surface.blit(text_surface, (self.rect.x + 10, self.rect.y + 5))
-
-    def handle_event(self, event):
-        if event.type == PG.MOUSEBUTTONDOWN:
-            self.active = self.rect.collidepoint(event.pos)
-        if event.type == PG.KEYDOWN and self.active:
-            if event.key == PG.K_RETURN:
-                self.active = False  # Deselect input field on Enter
-            elif event.key == PG.K_BACKSPACE:
-                self.text = self.text[:-1]  # Remove last character
-            elif event.unicode.isdigit():  # Allow only numbers
-                self.text += event.unicode
+from button import Button
+from input_field import Input
+from label import Label
 
 class Menu:
-    def __init__(self, surface: PG.Surface, font: PG.font, aircrafts):
+    def __init__(self, surface: PG.Surface, font: PG.font):
         self.surface = surface
         self.font = font
-        self.aircrafts = aircrafts
-
-        # Compass for selecting heading
-        self.compass = Compass(surface, 750, SCREEN_HEIGHT - MENU_HEIGHT // 2)
-
-        # Button to confirm heading
+        
         self.buttons = [
-            Button(surface, "Confirm HDG", 900, SCREEN_HEIGHT - MENU_HEIGHT + 25, 120, 30, font, self.apply_heading),
+            Button(surface = surface, text = 'Confirm', x = 480.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 120.0, height = 30.0, font = font, action = None)
+        ]
+
+        self.inputs = [
+            Input(surface = surface, font = font, x = 120.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = '000'),
+            Input(surface = surface, font = font, x = 240.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = '000'),
+            Input(surface = surface, font = font, x = 360.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 80.0, height = 30.0,  placeholder = '000'),
+        ]
+
+        self.labels = [
+            Label(surface = surface, font = font, text_color = MENU_TEXT_COLOR, text = 'Heading:', x = 120, y = SCREEN_HEIGHT - MENU_HEIGHT + 10.0),
+            Label(surface = surface, font = font, text_color = MENU_TEXT_COLOR, text = 'Speed:', x = 240, y = SCREEN_HEIGHT - MENU_HEIGHT + 10.0),
+            Label(surface = surface, font = font, text_color = MENU_TEXT_COLOR, text = 'Altitude:', x = 360, y = SCREEN_HEIGHT - MENU_HEIGHT + 10.0),
         ]
 
     def draw(self):
-        """Draw the menu, buttons, and compass."""
         PG.draw.rect(self.surface, MENU_BACKGROUND_COLOR, (0, SCREEN_HEIGHT - MENU_HEIGHT, MENU_WIDTH, MENU_HEIGHT))
 
         for button in self.buttons:
             button.draw()
 
-        self.compass.draw()
+        for input_field in self.inputs:
+            input_field.draw()
+
+        for label in self.labels:
+            label.draw()
 
     def handle_event(self, event):
-        """Handle input fields, buttons, and compass interactions."""
-        # Check if a new aircraft was selected
-        for aircraft in self.aircrafts:
-            if aircraft.selected:
-                self.compass.set_heading(aircraft.heading)  # Sync compass to aircraft heading
-        
-        self.compass.handle_event(event)
+        self.inputs[0].handle_event(event)
+        self.inputs[1].handle_event(event)
+        self.inputs[2].handle_event(event)
 
         for button in self.buttons:
             button.handle_event(event)
-
-    def apply_heading(self):
-        """Set the heading of the selected aircraft using the compass."""
-        for aircraft in self.aircrafts:
-            if aircraft.selected:
-                aircraft.set_target(heading=int(self.compass.heading))
-        for aircraft in self.aircrafts:
-            if aircraft.selected:
-                heading = int(self.heading_input.text) if self.heading_input.text else None
-                speed = int(self.speed_input.text) if self.speed_input.text else None
-                altitude = int(self.altitude_input.text) if self.altitude_input.text else None
-
-                aircraft.set_target(heading if heading else int(self.compass.heading), speed, altitude)
-                self.heading_input.text = ""
-                self.speed_input.text = ""
-                self.altitude_input.text = ""

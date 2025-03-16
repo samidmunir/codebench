@@ -7,7 +7,7 @@ from config_v2 import (
     FPS,
 )
 
-from menu import Menu
+from menu_v2 import Menu
 from grid_v2 import Grid
 from aircraft import Aircraft
 from airport import Airport, Runway

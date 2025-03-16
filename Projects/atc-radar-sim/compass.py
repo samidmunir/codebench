@@ -1,7 +1,7 @@
 import pygame as PG
 import math as MATH
 
-from config import (
+from config_v2 import (
     COMPASS_COLOR,
     COMPASS_RADIUS,
     TEXT_COLOR

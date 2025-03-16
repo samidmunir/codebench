@@ -1,7 +1,7 @@
 import pygame as PG
 import math as MATH
 
-from config import (
+from config_v2 import (
     AIRCRAFT_SIZE,
     AIRCRAFT_RING_SIZE,
     AIRCRAFT_SPEED_SCALAR,

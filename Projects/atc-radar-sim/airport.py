@@ -1,7 +1,7 @@
 import pygame as PG
 import math as MATH
 
-from config import (
+from config_v2 import (
     TEXT_COLOR,
     RUNWAY_COLOR,
     AIRPORT_SIZE,
