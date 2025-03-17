@@ -4,7 +4,6 @@ import math as MATH
 from config import (
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
-    MENU_WIDTH,
     MENU_HEIGHT,
     AIRCRAFT_SIZE,
     AIRCRAFT_RING_SIZE,
@@ -18,7 +17,7 @@ from config import (
 )
 
 class Aircraft:
-    def __init__(self, surface: PG.Surface, flight_number: str, type: str, x: float, y: float, heading: float, speed: float, altitude: float):
+    def __init__(self, surface: PG.Surface, flight_number: str, type: str, x: float, y: float, heading: float, speed: float, altitude: float, status: str = ''):
         self.surface = surface
         self.color = (0, 255, 255)
         self.flight_number = flight_number
@@ -34,6 +33,7 @@ class Aircraft:
         self.target_heading = self.heading
         self.target_speed = self.speed
         self.target_altitude = self.altitude
+        self.status = 'airborne'
     
     def draw(self):
         heading_rad = MATH.radians((self.heading - 90) % 360)
@@ -54,7 +54,7 @@ class Aircraft:
             PG.draw.line(self.surface, self.color, (self.x, self.y), (self.x + MATH.cos(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH, self.y + MATH.sin(heading_rad) * AIRCRAFT_HEADING_VECTOR_LENGTH), width = 2)
         
         if self.selected:
-            PG.draw.circle(self.surface, (0, 255, 255), (int(self.x), int(self.y)), AIRCRAFT_RING_SIZE, width = 2)
+            PG.draw.circle(self.surface, (255, 255, 0), (int(self.x), int(self.y)), AIRCRAFT_RING_SIZE, width = 2)
 
         label1 = f'{self.flight_number} - {self.type}'
         label2 = None
@@ -157,7 +157,7 @@ class Aircraft:
             blue = int(factor * 255)
             alpha = int((1 - factor) * 128)  # Adjust alpha for transparency
             color = (red, 0, blue, alpha)
-            PG.draw.circle(self.trail_surface, color, (int(tx), int(ty)), 5)
+            PG.draw.circle(self.trail_surface, color, (int(tx), int(ty)), 3)
 
         # Blit the trail surface onto the main screen
         screen.blit(self.trail_surface, (0, 0))
@@ -175,3 +175,12 @@ class Aircraft:
             self.target_speed = max(100, min(600, speed))
         if altitude is not None:
             self.target_altitude = max(1000, min(40000, altitude))
+
+    def handle_takeoff(self):
+        if self.speed < 150:
+            self.speed += 2
+        elif self.altitude < 5000:
+            self.altitude += 10
+        else:
+            self.status = 'airborne'
+        self.move()

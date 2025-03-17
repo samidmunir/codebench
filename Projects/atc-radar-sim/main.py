@@ -1,4 +1,5 @@
 import pygame as PG
+import random as RANDOM
 
 from config import (
     SCREEN_WIDTH,
@@ -23,7 +24,11 @@ CLOCK = PG.time.Clock()
 
 AIRCRAFT_CONTROLLER = AircraftController()
 
-AIRCRAFTS = []
+AIRCRAFTS = [
+    Aircraft(SCREEN, 'DAL527', 'A359', 25.0, 100.0, 90.0, 220.0, 5000, 'airborne'),
+    Aircraft(SCREEN, 'AAL223', 'A21N', 25.0, 200.0, 90.0, 250.0, 19000, 'airborne'),
+    Aircraft(SCREEN, 'JBU1738', 'A21N', 25.0, 300.0, 90.0, 300.0, 37000, 'airborne'),
+]
 
 GRID = Grid(surface = SCREEN)
 MENU = Menu(surface = SCREEN, font = FONT, aircrafts = AIRCRAFTS)
@@ -55,6 +60,8 @@ AIRPORTS = [
     ]),
 ]
 
+PG.time.set_timer(PG.USEREVENT, 15000)
+
 def main():
     RUNNING = True
 
@@ -76,10 +83,12 @@ def main():
         PG.display.flip()
         CLOCK.tick(FPS)
 
+        """
         if len(AIRCRAFTS) < MAXIMUM_AIRCRAFTS:
             ac_type, flight_number, x, y, heading, speed, altitude = AIRCRAFT_CONTROLLER.generate_random_aircraft() 
             new_aircraft = Aircraft(surface = SCREEN, flight_number = flight_number, type = ac_type, x = x, y = y, heading = heading, speed = speed, altitude = altitude)
-            AIRCRAFTS.append(new_aircraft)
+            AIRCRAFTS.append(new_aircraft)"
+        """
 
         for EVENT in PG.event.get():
             if EVENT.type == PG.QUIT:
@@ -87,14 +96,32 @@ def main():
             elif EVENT.type == PG.KEYDOWN:
                 if EVENT.key == PG.K_ESCAPE:
                     RUNNING = False
+            elif EVENT.type == PG.USEREVENT:
+                spawn_departures()
             elif EVENT.type == PG.MOUSEBUTTONDOWN:
                 for AIRCRAFT in AIRCRAFTS:
                     if AIRCRAFT.x - 10 < EVENT.pos[0] < AIRCRAFT.x + 10 and AIRCRAFT.y - 10 < EVENT.pos[1] < AIRCRAFT.y + 10:
                         AIRCRAFT.toggle_selection()
+                        if AIRCRAFT.selected:
+                            MENU.select_aircraft()
+                        else:
+                            MENU.deselect_all_inputs() # clear input fields on deselect
 
             MENU.handle_event(event = EVENT)
 
     PG.quit()
+
+def spawn_departures():
+    airport = RANDOM.choice(AIRPORTS)
+    spawn_location = airport.get_departure_spawn()
+
+    new_ac_type = AIRCRAFT_CONTROLLER.generate_random_type()
+    new_flight_number = AIRCRAFT_CONTROLLER.generate_random_flight_number(new_ac_type)
+
+    if spawn_location:
+        x, y, heading = spawn_location
+        new_aircraft = Aircraft(surface = SCREEN, flight_number = new_flight_number, type = new_ac_type, x = x, y = y, heading = heading, speed = 150, altitude = 2500, status = 'departing')
+        AIRCRAFTS.append(new_aircraft)
 
 if __name__ == '__main__':
     main()

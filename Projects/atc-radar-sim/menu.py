@@ -17,6 +17,7 @@ class Menu:
         self.surface = surface
         self.font = font
         self.aircrafts = aircrafts
+        self.active_input_index = None # track active input field
         
         self.buttons = [
             Button(surface = surface, text = 'Confirm', x = 480.0, y = SCREEN_HEIGHT - MENU_HEIGHT + 25.0, width = 120.0, height = 30.0, font = font, action = self.apply_commands)
@@ -47,6 +48,7 @@ class Menu:
             label.draw()
 
     def handle_event(self, event):
+        """
         for input_field in self.inputs:
             input_field.handle_event(event)
 
@@ -55,6 +57,28 @@ class Menu:
 
         if event.type == PG.KEYDOWN and event.key == PG.K_RETURN:
             self.apply_commands()
+        """
+        if event.type == PG.KEYDOWN:
+            if event.key == PG.K_TAB:
+                self.switch_focus()
+            elif event.key == PG.K_RETURN:
+                self.apply_commands()
+            else:
+                # let the active input field handle input
+                if self.active_input_index is not None:
+                    self.inputs[self.active_input_index].handle_event(event)
+        
+        for button in self.buttons:
+            button.handle_event(event)
+
+    def switch_focus(self):
+        if self.active_input_index is None:
+            self.active_input_index = 0 # start at the first input
+        else:
+            self.active_input_index = (self.active_input_index + 1) % len(self.inputs) # cycle through inputs
+
+        for i, input_field in enumerate(self.inputs):
+            input_field.active = (i == self.active_input_index)
 
     def apply_commands(self):
         for AIRCRAFT in self.aircrafts:
@@ -63,7 +87,20 @@ class Menu:
                 speed = int(self.inputs[1].text) if self.inputs[1].text else None
                 altitude = int(self.inputs[2].text) if self.inputs[2].text else None
                 AIRCRAFT.set_target(heading, speed, altitude)
-                self.inputs[0].text = ''
-                self.inputs[1].text = ''
-                self.inputs[2].text = ''
+                for input_field in self.inputs:
+                    input_field.text = ''
+                    input_field.active = False # deselect all fields
+                self.active_input_index = None # reset active field
                 AIRCRAFT.toggle_selection()
+
+    def select_aircraft(self):
+        self.active_input_index = 0
+
+        for i, input_field in enumerate(self.inputs):
+            input_field.active = (i == 0)
+
+    def deselect_all_inputs(self):
+        for input_field in self.inputs:
+            input_field.text = ''
+            input_field.active = False
+        self.active_input_index = None

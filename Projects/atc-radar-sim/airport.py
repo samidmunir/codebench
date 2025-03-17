@@ -1,5 +1,6 @@
 import pygame as PG
 import math as MATH
+import random as RANDOM
 
 from config import (
     MENU_TEXT_COLOR,
@@ -62,3 +63,13 @@ class Airport:
         # label = font.render(f"{self.code} - {self.name}", True, TEXT_COLOR)
         label = font.render(f"{self.code}", True, (self.color))
         self.surface.blit(label, (self.x - 40, self.y - 40))
+
+        PG.draw.circle(self.surface, (0, 255, 0), (self.x, self.y), 150, 2)
+
+    def get_departure_spawn(self):
+        if not self.runways:
+            return None
+        
+        runway = RANDOM.choice(self.runways)
+
+        return (runway.x, runway.y, runway.heading)
