@@ -40,5 +40,23 @@ public class App {
         System.out.println("Test Case 2");
         System.out.println("nums: " + Arrays.deepToString(nums2));
         System.out.println("output: " + solution.buttonWithLongestTime(nums2) + "\n");
+
+        // Test Case 3
+        int[][] nums3 = {{1, 2}, {2, 5}, {1, 8}, {2, 11}};
+        System.out.println("Test Case 3");
+        System.out.println("nums: " + Arrays.deepToString(nums3));
+        System.out.println("output: " + solution.buttonWithLongestTime(nums3) + "\n");
+
+        // Test Case 4
+        int[][] nums4 = {{1, 2}, {2, 5}, {3, 9}, {1, 15}, {3, 25}};
+        System.out.println("Test Case 4");
+        System.out.println("nums: " + Arrays.deepToString(nums4));
+        System.out.println("output: " + solution.buttonWithLongestTime(nums4) + "\n");
+
+        // Test Case 5
+        int[][] nums5 = {{10, 4}, {1, 6}, {7, 14}};
+        System.out.println("Test Case 5");
+        System.out.println("nums: " + Arrays.deepToString(nums5));
+        System.out.println("output: " + solution.buttonWithLongestTime(nums5) + "\n");
     }
 }
