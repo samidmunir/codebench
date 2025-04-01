@@ -28,6 +28,10 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 3427. Sum of Varivable Length Subarrays
 3432. Count Partitions with Even Sum Difference
 3452. Sum of Good Numbers
+### Leetcode 75
+* __Array/String__
+    * Merge Strings Alternatively (#1768)
+        * Java solution
 ### Neetcode 150
 1. Two Sum
 49. Group Anagrams
