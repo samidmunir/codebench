@@ -39,7 +39,7 @@ const Navbar = () => {
     const pathname = usePathname()
 
     return (
-        <nav className='border-b-2 border-red-500 px-16 py-4 bg-zinc-900 flex align-middle justify-between'>
+        <nav className='fixed top-0 left-0 w-full z-50 border-b-2 border-red-500 px-16 py-4 bg-zinc-900 flex align-middle justify-between'>
             <div className='flex flex-row align-middle gap-4 my-auto'>
                 <Image src={TT_Customs_Logo} alt='Logo' height={75} width={75} className='my-auto'/>
                 <h1 className='text-4xl my-auto text-zinc-500 font-bold'>TT CUSTOMS</h1>
