@@ -32,6 +32,8 @@ Sami Munir | sami.munir2001@gmail.com | Rutgers University Computer Science
 * __Array/String__
     * Merge Strings Alternatively (#1768)
         * Java solution
+    * Greatest Common Divisor of Strings (#1071)
+        * Java solution
 ### Neetcode 150
 1. Two Sum
 49. Group Anagrams

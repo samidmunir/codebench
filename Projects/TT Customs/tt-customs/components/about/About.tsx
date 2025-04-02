@@ -6,7 +6,7 @@ import { PiLightningBold, PiGear, PiPaintBrushBroad } from 'react-icons/pi'
 
 const About = () => {
   return (
-    <section className="bg-zinc-900 px-6 py-16 text-zinc-200">
+    <section className="bg-zinc-900 px-6 py-16 text-zinc-200 lg:mt-8 sm:mt-4 md:mt-8">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-4xl font-bold text-red-500 mb-4">About TT Customs</h2>
         <p className="text-zinc-400 mb-12">

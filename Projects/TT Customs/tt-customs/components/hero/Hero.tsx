@@ -157,7 +157,7 @@ const Hero = () => {
         <div className='p-8 bg-zinc-900'>
             <h1 className='text-red-500 text-4xl text-center'>Top Tier Customs Shop</h1>
             <h2 className='text-center text-3xl text-zinc-300'>Featured Products</h2>
-            <div className='bg-zinc-800 w-[600] mx-auto mt-4 rounded-lg'>
+            <div className='bg-zinc-900 w-[600] mx-auto mt-4 rounded-lg'>
                 {featuredProducts.map(featuredProduct => <FeaturedStrip key={featuredProduct.id} icon={featuredProduct.icon} title={featuredProduct.title} price={featuredProduct.price} buttonText={featuredProduct.buttonText} />)}
             </div>
         </div>
